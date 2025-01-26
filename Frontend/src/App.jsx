@@ -1,10 +1,15 @@
 import React from 'react'
+import { BrowserRouter , Routes , Route } from 'react-router-dom'
+import { LoginPage , SignupPage } from './Routes'
 
 const App = () => {
   return (
-    <div className='text-red-500'>
-      Hello World
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path = "/login" element = {<LoginPage/>}/>
+        <Route path = "/signup" element = {<SignupPage/>}/>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
