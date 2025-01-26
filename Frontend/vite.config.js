@@ -10,5 +10,15 @@ export default defineConfig({
       Roboto : ['Roboto', 'sans-serif'],
       Popins : ['Popins', 'sans-serif'],
     },
-  }
+    extend : {
+      screens :{
+        "1000px" : "1050px",
+        "1100px" : "1100px",
+        "1300px" : "1300px",
+        "800px" : "800px",
+        "400px" : "400px",
+      }
+    },
+  },
+
 })
