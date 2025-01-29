@@ -1,31 +1,32 @@
-const ErrorHandler = require('../utils/ErrorHandler'); // Import the ErrorHandler class
+const ErrorHandler = require('../utils/ErrorHandler'); // Make sure you're importing the class
 
-module.exports = (err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
+router.post('/create-user', upload.single("avatar"), async (req, res, next) => {
+    try {
+        const { name, email, password } = req.body;
+        const userEmail = await User.findOne({ email });
 
-  // Handle specific errors
-  if (err.name === 'CastError') {
-    const message = `Resource not found. Invalid: ${err.path}`;
-    err = new ErrorHandler(400, message);
-  }
+        if (userEmail) {
+            return next(new ErrorHandler(400, "Email already exists"));  // Add 'new' here
+        }
 
-  if (err.code === 11000) {
-    const message = `Duplicate ${Object.keys(err.keyValue)} entered`;
-    err = new ErrorHandler(400, message);
-  }
+        const filename = req.file.filename;
+        const fileUrl = path.join(filename);
 
-  if (err.name === 'JsonWebTokenError') {
-    const message = `JSON Web Token is invalid, Try again`;
-    err = new ErrorHandler(400, message);
-  }
+        const user = {
+            name,
+            email,
+            password,
+            avatar: fileUrl,
+        };
 
-  if (err.name === 'TokenExpiredError') {
-    const message = `JSON Web Token is expired, Try again`;
-    err = new ErrorHandler(401, message); // Unauthorized
-  }
+        console.log(user);
 
-  res.status(err.statusCode).json({
-    success: false,
-    message: err.message,
-  });
-};
+        res.status(201).json({
+            success: true,
+            message: "User created successfully",
+            user
+        });
+    } catch (error) {
+        next(error);
+    }
+});

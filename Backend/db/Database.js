@@ -3,12 +3,9 @@ require('dotenv').config({
     path: '/Backend/config/.env'
 });
 
-const connectToDatabase = async () => {
+const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.DB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.DB_URL);
     console.log('Connected to MongoDB successfully!');
   } catch (error) {
     console.error('Error connecting to MongoDB:', error);
@@ -16,4 +13,4 @@ const connectToDatabase = async () => {
   }
 };
 
-module.exports = connectToDatabase;
+module.exports = connectDB;

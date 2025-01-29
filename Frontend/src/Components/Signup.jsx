@@ -3,6 +3,8 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styles from "../styles/styles";
 import { Link } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
+import axios from "axios";
+import { server } from "../server";
 
 const Singup = () => {
   const [email, setEmail] = useState("");
@@ -12,19 +14,26 @@ const Singup = () => {
   const [avatar, setAvatar] = useState(null);
 
   const handleFileInputChange = (e) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setAvatar(reader.result);
+    const file = e.target.files[0];
+    setAvatar(file);
       }
-    };
 
-    reader.readAsDataURL(e.target.files[0]);
-  };
+
 
   const handleSubmit = async (e) => {
-    console.log("ffff");
+    const config = {headers : {"Content-Type" :"multipart/form-data "}};
+    const newform = new FormData();
+    newform.append("name", name);
+    newform.append("email", email);
+    newform.append("password", password
+    );
+    newform.append("file", avatar);
+    axios.post(`${server}/user/create-user` , newform , config).then((res)=>{
+      console.log(res);
+    }).catch((err)=>{
+      console.log(err);
+    })
+    console.log(newform);
   };
 
   return (
